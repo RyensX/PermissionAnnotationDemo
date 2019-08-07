@@ -46,7 +46,7 @@ public class AnnotationAspect {
     }
 
     /*
-     * Before方式Advice，被注解方法可返回值，但不可根据授权情况决定是否调用
+     * Before方式Advice，被注解方法可返回值，但不可根据授权情况决定是否调用（是否授权都会调用）
      */
     @Pointcut("call(@com.su.permissionannotation.Apis.Permissions * *(..)) && @annotation(permissions)")
     public void PermissionsInject(Permissions permissions) {

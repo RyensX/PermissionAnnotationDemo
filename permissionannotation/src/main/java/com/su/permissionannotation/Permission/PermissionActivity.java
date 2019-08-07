@@ -79,7 +79,14 @@ public class PermissionActivity extends Activity {
             }
         } else {
             if (PermissionUtils.shouldShowRequestPermissionRationale(this, permissions))
-                Toast.makeText(this, "用户拒绝授予权限", Toast.LENGTH_SHORT).show();
+                switch (requestCode) {
+                    case PermissionUtils.DEFALUT_REQUSETCODE:
+                    case PermissionUtils.DEFALUT_AREQUSETCODE:
+                        Toast.makeText(this, "用户拒绝授予权限", Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                        Toast.makeText(this, "自定义拒绝处理", Toast.LENGTH_SHORT).show();
+                }
             finish();
         }
     }
