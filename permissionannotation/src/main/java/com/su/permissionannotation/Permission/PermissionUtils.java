@@ -12,15 +12,18 @@ public class PermissionUtils {
 
     static final String NAME_PERMISSIONS = "permissions";
     static final String NAME_REQUSETCODE = "requestCode";
-    public final static int DEFALUT_REQUSETCODE = 100;//Before方式Advice默认requestCode
-    public final static int DEFALUT_AREQUSETCODE = 200;//Around方式Advice默认requestCode
+    static final String NAME_DMSG = "dmsg";
+    public final static int DEFAULT_REQUSETCODE = 100;//Before方式Advice默认requestCode
+    public final static int DEFAULT_AREQUSETCODE = 200;//Around方式Advice默认requestCode
     public final static int ERROR_REQUESTCODE = -1;
+    public final static String DEFAULT_MSG = "本应用需要一定权限才可正常运行，请授予权限";
 
     //开始进行权限申请流程
-    public static void requestPermission(Context context, int requsetCode, String... permissions) {
+    public static void requestPermission(Context context, int requsetCode, String dmsg, String... permissions) {
         Intent intent = new Intent(context, PermissionActivity.class);
         intent.putExtra(NAME_REQUSETCODE, requsetCode);
         intent.putExtra(NAME_PERMISSIONS, permissions);
+        intent.putExtra(NAME_DMSG, dmsg);
         context.startActivity(intent);
         //屏蔽过渡动画
         if (context instanceof Activity)

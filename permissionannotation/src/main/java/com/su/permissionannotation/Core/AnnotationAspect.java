@@ -39,10 +39,11 @@ public class AnnotationAspect {
             return;
 
         for (String per : permissions.value())
-            Log.d("注解值", per);
+            Log.d("注解权限值", per);
+
 
         PermissionActivity.setJoinPoint(joinPoint);
-        PermissionUtils.requestPermission(context, permissions.requestCode(), permissions.value());
+        PermissionUtils.requestPermission(context, permissions.requestCode(), permissions.denialMsg(), permissions.value());
     }
 
     /*
@@ -67,7 +68,7 @@ public class AnnotationAspect {
             Log.d("注解值", per);
 
         //PermissionActivity.setJoinPoint(joinPoint);
-        PermissionUtils.requestPermission(context, permissions.requestCode(), permissions.value());
+        PermissionUtils.requestPermission(context, permissions.requestCode(), permissions.denialMsg(), permissions.value());
     }
 
     private Context getContext(Object object) {

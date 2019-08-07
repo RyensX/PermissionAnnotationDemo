@@ -15,6 +15,7 @@ public class PermissionActivity extends Activity {
     private String TAG = this.toString();
     private String[] permissions;
     private int requestCode;
+    private String dmsg = "";
 
     private static ProceedingJoinPoint joinPoint = null;
 
@@ -33,6 +34,7 @@ public class PermissionActivity extends Activity {
     private void setData() {
         permissions = getIntent().getExtras().getStringArray(PermissionUtils.NAME_PERMISSIONS);
         requestCode = getIntent().getIntExtra(PermissionUtils.NAME_REQUSETCODE, PermissionUtils.ERROR_REQUESTCODE);
+        dmsg = getIntent().getStringExtra(PermissionUtils.NAME_DMSG);
         if (permissions == null || requestCode == PermissionUtils.ERROR_REQUESTCODE) {
             Log.d(TAG, "数据传递出错，终止申请");
             finish();
@@ -80,9 +82,9 @@ public class PermissionActivity extends Activity {
         } else {
             if (PermissionUtils.shouldShowRequestPermissionRationale(this, permissions))
                 switch (requestCode) {
-                    case PermissionUtils.DEFALUT_REQUSETCODE:
-                    case PermissionUtils.DEFALUT_AREQUSETCODE:
-                        Toast.makeText(this, "用户拒绝授予权限", Toast.LENGTH_SHORT).show();
+                    case PermissionUtils.DEFAULT_REQUSETCODE:
+                    case PermissionUtils.DEFAULT_AREQUSETCODE:
+                        Toast.makeText(this, dmsg, Toast.LENGTH_SHORT).show();
                         break;
                     default:
                         Toast.makeText(this, "自定义拒绝处理", Toast.LENGTH_SHORT).show();
