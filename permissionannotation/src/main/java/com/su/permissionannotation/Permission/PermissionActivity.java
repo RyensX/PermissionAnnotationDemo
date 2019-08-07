@@ -4,24 +4,17 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
-import android.widget.Toast;
 
+import com.su.permissionannotation.Interface.PermissionStatusListener;
 import com.su.permissionannotation.R;
 
-import org.aspectj.lang.ProceedingJoinPoint;
 
 public class PermissionActivity extends Activity {
 
     private String TAG = this.toString();
     private String[] permissions;
     private int requestCode;
-    private String dmsg = "";
-
-    private static ProceedingJoinPoint joinPoint = null;
-
-    public static void setJoinPoint(ProceedingJoinPoint point) {
-        joinPoint = point;
-    }
+    static PermissionStatusListener listener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +27,6 @@ public class PermissionActivity extends Activity {
     private void setData() {
         permissions = getIntent().getExtras().getStringArray(PermissionUtils.NAME_PERMISSIONS);
         requestCode = getIntent().getIntExtra(PermissionUtils.NAME_REQUSETCODE, PermissionUtils.ERROR_REQUESTCODE);
-        dmsg = getIntent().getStringExtra(PermissionUtils.NAME_DMSG);
         if (permissions == null || requestCode == PermissionUtils.ERROR_REQUESTCODE) {
             Log.d(TAG, "数据传递出错，终止申请");
             finish();
@@ -43,60 +35,47 @@ public class PermissionActivity extends Activity {
         for (String permission : permissions)
             Log.d("申请权限", permission);
 
-        try {
-            requestPermissions();
-        } catch (Throwable throwable) {
-            throwable.printStackTrace();
-        }
+        requestPermissions();
+
     }
 
     //开始申请
-    private void requestPermissions() throws Throwable {
+    private void requestPermissions() {
         //检查是否已授权
         if (!PermissionUtils.checkPermissions(this, permissions)) {
             Log.d(TAG, "开始申请权限");
             ActivityCompat.requestPermissions(this, permissions, requestCode);
         } else {
-            Log.d(TAG, permissions.length + "个权限" + "已全部授予");
-            callMethob();
+            listener.onSuccess();
             finish();
         }
-    }
-
-    private void callMethob() throws Throwable {
-        if (joinPoint != null)
-            joinPoint.proceed();
-        finish();
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         //super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (PermissionUtils.checkPermissions(this, permissions)) {
+            listener.onSuccess();
             Log.d(TAG, "权限申请流程执行完毕");
-            try {
-                callMethob();
-            } catch (Throwable throwable) {
-                throwable.printStackTrace();
-            }
         } else {
             if (PermissionUtils.shouldShowRequestPermissionRationale(this, permissions))
                 switch (requestCode) {
                     case PermissionUtils.DEFAULT_REQUSETCODE:
                     case PermissionUtils.DEFAULT_AREQUSETCODE:
-                        Toast.makeText(this, dmsg, Toast.LENGTH_SHORT).show();
+                        listener.onDefaultDenial();
                         break;
                     default:
-                        Toast.makeText(this, "自定义拒绝处理", Toast.LENGTH_SHORT).show();
+                        listener.onDenial();
                 }
-            finish();
+
         }
+        finish();
     }
 
     @Override
     public void finish() {
         super.finish();
-        joinPoint = null;
+        listener = null;
         //屏蔽动画
         overridePendingTransition(0, 0);
     }

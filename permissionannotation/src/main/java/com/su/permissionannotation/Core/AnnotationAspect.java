@@ -6,7 +6,7 @@ import android.util.Log;
 
 import com.su.permissionannotation.Apis.APermissions;
 import com.su.permissionannotation.Apis.Permissions;
-import com.su.permissionannotation.Permission.PermissionActivity;
+import com.su.permissionannotation.Interface.PermissionStatusListener;
 import com.su.permissionannotation.Permission.PermissionUtils;
 
 import org.aspectj.lang.JoinPoint;
@@ -28,11 +28,11 @@ public class AnnotationAspect {
     }
 
     @Around("APermissionsInject(permissions)")
-    public void onAPermissionsInject(ProceedingJoinPoint joinPoint, APermissions permissions) {
+    public void onAPermissionsInject(final ProceedingJoinPoint joinPoint, final APermissions permissions) {
         Log.d("切入点", joinPoint.getSignature().getName());
 
         Object object = joinPoint.getThis();
-        Context context = getContext(object);
+        final Context context = getContext(object);
 
 
         if (context == null || permissions == null)
@@ -41,9 +41,26 @@ public class AnnotationAspect {
         for (String per : permissions.value())
             Log.d("注解权限值", per);
 
+        PermissionUtils.requestPermission(new PermissionStatusListener() {
+            @Override
+            public void onSuccess() {
+                try {
+                    joinPoint.proceed();
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
+                }
+            }
 
-        PermissionActivity.setJoinPoint(joinPoint);
-        PermissionUtils.requestPermission(context, permissions.requestCode(), permissions.denialMsg(), permissions.value());
+            @Override
+            public void onDefaultDenial() {
+                PermissionUtils.showDefaultMsg(context, permissions.denialMsg());
+            }
+
+            @Override
+            public void onDenial() {
+                //TODO 查找对应注解的方法调用
+            }
+        }, context, permissions.requestCode(), permissions.value());
     }
 
     /*
@@ -55,11 +72,11 @@ public class AnnotationAspect {
     }
 
     @Before("PermissionsInject(permissions)")
-    public void onPermissionsInject(JoinPoint joinPoint, Permissions permissions) {
+    public void onPermissionsInject(JoinPoint joinPoint, final Permissions permissions) {
         Log.d("切入点", joinPoint.getSignature().getName());
 
         Object object = joinPoint.getThis();
-        Context context = getContext(object);
+        final Context context = getContext(object);
 
         if (context == null || permissions == null)
             return;
@@ -67,8 +84,22 @@ public class AnnotationAspect {
         for (String per : permissions.value())
             Log.d("注解值", per);
 
-        //PermissionActivity.setJoinPoint(joinPoint);
-        PermissionUtils.requestPermission(context, permissions.requestCode(), permissions.denialMsg(), permissions.value());
+        PermissionUtils.requestPermission(new PermissionStatusListener() {
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onDefaultDenial() {
+                PermissionUtils.showDefaultMsg(context, permissions.denialMsg());
+            }
+
+            @Override
+            public void onDenial() {
+
+            }
+        }, context, permissions.requestCode(), permissions.value());
     }
 
     private Context getContext(Object object) {
@@ -81,4 +112,5 @@ public class AnnotationAspect {
             context = ((android.support.v4.app.Fragment) object).getActivity();
         return context;
     }
+
 }
