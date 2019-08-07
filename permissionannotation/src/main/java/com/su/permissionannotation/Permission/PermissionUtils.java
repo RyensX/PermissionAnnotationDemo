@@ -12,7 +12,8 @@ public class PermissionUtils {
 
     static final String NAME_PERMISSIONS = "permissions";
     static final String NAME_REQUSETCODE = "requestCode";
-    public final static int DEFALUT_REQUSETCODE = 100;
+    public final static int DEFALUT_REQUSETCODE = 100;//Before方式Advice默认requestCode
+    public final static int DEFALUT_AREQUSETCODE = 200;//Around方式Advice默认requestCode
     public final static int ERROR_REQUESTCODE = -1;
 
     //开始进行权限申请流程

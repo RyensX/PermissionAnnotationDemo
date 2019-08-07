@@ -20,7 +20,7 @@ import org.aspectj.lang.annotation.Pointcut;
 public class AnnotationAspect {
 
     /*
-     *Around方式，注解方法不可返回值，否则无法编译，但可根据授权情况决定是否调用（即授权后才会调用）
+     *Around方式方式Advice，被注解方法不可返回值，否则无法编译，但可根据授权情况决定是否调用（即授权后才会调用）
      */
     @Pointcut("call(@com.su.permissionannotation.Apis.APermissions * *(..)) && @annotation(permissions)")
     public void APermissionsInject(APermissions permissions) {
@@ -46,7 +46,7 @@ public class AnnotationAspect {
     }
 
     /*
-     * Before方式，注解方法可返回值，但不可根据授权情况决定是否调用
+     * Before方式Advice，被注解方法可返回值，但不可根据授权情况决定是否调用
      */
     @Pointcut("call(@com.su.permissionannotation.Apis.Permissions * *(..)) && @annotation(permissions)")
     public void PermissionsInject(Permissions permissions) {

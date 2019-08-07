@@ -11,5 +11,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface APermissions {
     String[] value();
-    int requestCode() default PermissionUtils.DEFALUT_REQUSETCODE;
+    int requestCode() default PermissionUtils.DEFALUT_AREQUSETCODE;
 }
