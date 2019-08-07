@@ -87,6 +87,7 @@ public class PermissionActivity extends Activity {
     @Override
     public void finish() {
         super.finish();
+        joinPoint = null;
         //屏蔽动画
         overridePendingTransition(0, 0);
     }
