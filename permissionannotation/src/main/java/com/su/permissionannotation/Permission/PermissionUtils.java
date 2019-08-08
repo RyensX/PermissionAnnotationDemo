@@ -8,8 +8,13 @@ import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 
+import com.su.permissionannotation.Apis.PermissionDenial;
 import com.su.permissionannotation.Interface.PermissionStatusListener;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 public class PermissionUtils {
 
@@ -55,6 +60,25 @@ public class PermissionUtils {
             if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission))
                 return true;
         return false;
+    }
+
+    //调用被@PermissionDenial注解的对应requestCode方法
+    public static void onCustomPermissionDenial(Object object, int requestCode) throws InvocationTargetException, IllegalAccessException {
+        //TODO 利用Aspect注入拒绝回调
+        long s = System.currentTimeMillis();
+        Class<?> c = object.getClass();
+        Method[] methods = c.getDeclaredMethods();
+        for (Method method : methods) {
+            method.setAccessible(true);
+            if (method.isAnnotationPresent(PermissionDenial.class)) {
+                PermissionDenial permissionDenial = method.getAnnotation(PermissionDenial.class);
+                if (permissionDenial.requestCode() == requestCode) {
+                    method.invoke(object);
+                    Log.d("Denial回调：", System.currentTimeMillis() - s + "ms");
+                    return;
+                }
+            }
+        }
     }
 
     //默认权限说明

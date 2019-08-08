@@ -1,7 +1,9 @@
 package com.su.permissionannotation.Interface;
 
+import java.lang.reflect.InvocationTargetException;
+
 public interface PermissionStatusListener {
     void onSuccess();
     void onDefaultDenial();
-    void onDenial();
+    void onCustomDenial() throws InvocationTargetException, IllegalAccessException;
 }

@@ -16,11 +16,13 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 
+import java.lang.reflect.InvocationTargetException;
+
 @Aspect
 public class AnnotationAspect {
 
     /*
-     *Around方式方式Advice，被注解方法不可返回值，否则无法编译，但可根据授权情况决定是否调用（即授权后才会调用）
+     *Around方式Advice，被注解方法不可返回值，否则无法编译，但可根据授权情况决定是否调用（即授权后才会调用）
      */
     @Pointcut("call(@com.su.permissionannotation.Apis.APermissions * *(..)) && @annotation(permissions)")
     public void APermissionsInject(APermissions permissions) {
@@ -57,8 +59,8 @@ public class AnnotationAspect {
             }
 
             @Override
-            public void onDenial() {
-                //TODO 查找对应注解的方法调用
+            public void onCustomDenial() throws InvocationTargetException, IllegalAccessException {
+                PermissionUtils.onCustomPermissionDenial(joinPoint.getThis(), permissions.requestCode());
             }
         }, context, permissions.requestCode(), permissions.value());
     }
@@ -72,7 +74,7 @@ public class AnnotationAspect {
     }
 
     @Before("PermissionsInject(permissions)")
-    public void onPermissionsInject(JoinPoint joinPoint, final Permissions permissions) {
+    public void onPermissionsInject(final JoinPoint joinPoint, final Permissions permissions) {
         Log.d("切入点", joinPoint.getSignature().getName());
 
         Object object = joinPoint.getThis();
@@ -96,8 +98,8 @@ public class AnnotationAspect {
             }
 
             @Override
-            public void onDenial() {
-
+            public void onCustomDenial() throws InvocationTargetException, IllegalAccessException {
+                PermissionUtils.onCustomPermissionDenial(joinPoint.getThis(), permissions.requestCode());
             }
         }, context, permissions.requestCode(), permissions.value());
     }

@@ -8,6 +8,8 @@ import android.util.Log;
 import com.su.permissionannotation.Interface.PermissionStatusListener;
 import com.su.permissionannotation.R;
 
+import java.lang.reflect.InvocationTargetException;
+
 
 public class PermissionActivity extends Activity {
 
@@ -65,7 +67,13 @@ public class PermissionActivity extends Activity {
                         listener.onDefaultDenial();
                         break;
                     default:
-                        listener.onDenial();
+                        try {
+                            listener.onCustomDenial();
+                        } catch (InvocationTargetException e) {
+                            e.printStackTrace();
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
+                        }
                 }
 
         }
