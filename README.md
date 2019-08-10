@@ -34,7 +34,7 @@ PermissionAnnotation目前有三种注解，分别是
 ```
 ### @Permission和@APermission
 
-`@Permission`和`@APermission`都是时申请权限的注解，不同的地方在于
+`@Permission`和`@APermission`都是申请权限的注解，不同的地方在于
 ```Java
 @Permission 
 //注解的方法可以有返回值，但无论申请成功与否都会执行
@@ -43,13 +43,21 @@ PermissionAnnotation目前有三种注解，分别是
 //注解的方法不可有返回值，但它可以根据申请情况决定是否调用，也就是只有成功申请到权限才会成功调用
 ```
 两个注解均支持同时申请多个权限，且支持指定requestCode。具体属性值如下
-| 属性                       | 类型        | 说明  |默认值          |
-| ------------- | ---------| ------------------- |--------------- |
-| value         | String[] | 存放权限             | 无，必须指定    |
-| requsetCode   | int      | 申请权限时的请求码    |100/200         |
-| denialMsg     | String   | 默认拒绝提示显示的msg | [DEFAULT_MSG](https://github.com/Ryensu/PermissionAnnotationDemo/blob/master/permissionannotation/src/main/java/com/su/permissionannotation/Permission/PermissionUtils.java)        |
+
+属性          | 类型      | 说明                 |默认值
+------------- | ---------| -------------------- |---------------
+value         | String[] | 存放权限             | 无，必须指定
+ requsetCode  | int      | 申请权限时的请求码    |100/200
+denialMsg     | String   | 默认拒绝提示显示的msg | [DEFAULT_MSG](https://github.com/Ryensu/PermissionAnnotationDemo/blob/master/permissionannotation/src/main/java/com/su/permissionannotation/Permission/PermissionUtils.java)
+
 在需要申请权限的方法头上加`@Permission`或`@APermission`即可在被调用时申请权限，如
 ```Java
+@Permissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    private int testMethod0(int t) {
+        Log.d("测试", "testMethod0" + t);
+        return t;
+    }
+
 @Permissions(value = Manifest.permission.WRITE_EXTERNAL_STORAGE, denialMsg = "测试msg")
     public int testMethod(int t) {
         Log.d("测试", "testMethod" + t);
