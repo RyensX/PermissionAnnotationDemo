@@ -39,7 +39,7 @@ publish {
     userOrg = 'ryens'
     groupId = 'com.su'
     artifactId = 'PermissionAnnotation'
-    publishVersion = '1.0.0'
+    publishVersion = '1.0.1'
     desc = 'This is a dynamic permission library implemented with AOP.'
     website = 'https://github.com/Ryensu/PermissionAnnotationDemo'
 }

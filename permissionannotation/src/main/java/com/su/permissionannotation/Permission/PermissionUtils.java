@@ -74,7 +74,7 @@ public class PermissionUtils {
                 PermissionDenial permissionDenial = method.getAnnotation(PermissionDenial.class);
                 if (permissionDenial.requestCode() == requestCode) {
                     method.invoke(object);
-                    Log.d("Denial回调：", System.currentTimeMillis() - s + "ms");
+                    Log.d("Denial回调耗时：", System.currentTimeMillis() - s + "ms");
                     return;
                 }
             }

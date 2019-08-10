@@ -64,9 +64,11 @@ public class PermissionActivity extends Activity {
                 switch (requestCode) {
                     case PermissionUtils.DEFAULT_REQUSETCODE:
                     case PermissionUtils.DEFAULT_AREQUSETCODE:
+                        Log.d("授权回调", "默认Denial");
                         listener.onDefaultDenial();
                         break;
                     default:
+                        Log.d("授权回调", "自定义Denial");
                         try {
                             listener.onCustomDenial();
                         } catch (InvocationTargetException e) {

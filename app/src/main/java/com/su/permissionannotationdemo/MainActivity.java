@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @Permissions(value = Manifest.permission.WRITE_EXTERNAL_STORAGE, denialMsg = "测试dfdfd")
+    @Permissions(value = Manifest.permission.WRITE_EXTERNAL_STORAGE, denialMsg = "测试msg")
     public int testMethod(int t) {
         Log.d("注入测试,执行方法", "testMethod" + t);
         return t;
