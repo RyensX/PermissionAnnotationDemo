@@ -4,7 +4,7 @@
 - **完全注解使用**
 
 ## 引入
-### 注意，PermissionAnnotation只能在AS上使用（因为用了AOT框架）
+### 注意，PermissionAnnotation只能在AS上使用（因为用了AOP框架）
 先在根目录build.gradle的dependencies里添加
 ```gradle
 dependencies {
