@@ -2,8 +2,9 @@ package com.su.permissionannotation.Core;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.v4.app.Fragment;
 import android.util.Log;
+
+import androidx.fragment.app.Fragment;
 
 import com.su.permissionannotation.Apis.APermissions;
 import com.su.permissionannotation.Apis.Permissions;

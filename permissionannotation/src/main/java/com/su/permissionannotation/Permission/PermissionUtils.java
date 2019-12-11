@@ -5,9 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
+
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AlertDialog;
+
 import android.util.Log;
 
 import com.su.permissionannotation.Apis.PermissionDenial;
@@ -20,16 +22,17 @@ public class PermissionUtils {
 
     static final String NAME_PERMISSIONS = "permissions";
     static final String NAME_REQUSETCODE = "requestCode";
+    public final static String ROOT_PERMISSION = "android.root";
     public final static int DEFAULT_REQUSETCODE = 100;//Before方式Advice默认requestCode
     public final static int DEFAULT_AREQUSETCODE = 200;//Around方式Advice默认requestCode
     public final static int ERROR_REQUESTCODE = -1;
     public final static String DEFAULT_MSG = "本应用需要一定权限才可正常运行，请授予权限";//默认权限说明
 
     //开始进行权限申请流程
-    public static void requestPermission(PermissionStatusListener listener, Context context, int requsetCode, String... permissions) {
+    public static void requestPermission(PermissionStatusListener listener, Context context, int requestCode, String... permissions) {
         PermissionActivity.listener = listener;
         Intent intent = new Intent(context, PermissionActivity.class);
-        intent.putExtra(NAME_REQUSETCODE, requsetCode);
+        intent.putExtra(NAME_REQUSETCODE, requestCode);
         intent.putExtra(NAME_PERMISSIONS, permissions);
         context.startActivity(intent);
         //屏蔽过渡动画
@@ -38,7 +41,7 @@ public class PermissionUtils {
     }
 
     //检查权限是否授予
-    public static boolean checkPermissions(Context context, String... permissions) {
+    static boolean checkPermissions(Context context, String... permissions) {
         boolean isHas = false;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             if (permissions != null)
