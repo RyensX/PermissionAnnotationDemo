@@ -1,10 +1,11 @@
 package com.su.permissionannotationdemo;
 
 import android.Manifest;
-import android.support.v7.app.AppCompatActivity;
+import android.content.DialogInterface;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.su.permissionannotation.Apis.APermissions;
 import com.su.permissionannotation.Apis.PermissionDenial;
@@ -34,6 +35,16 @@ public class MainActivity extends AppCompatActivity {
 
     @PermissionDenial(requestCode = 111)
     private void testMethod2Denial() {
-        Toast.makeText(this, "testMethod2方法申请权限被拒绝的回调方法", Toast.LENGTH_SHORT).show();
+        AlertDialog al = new AlertDialog.Builder(this)
+                .setTitle("fdfd")
+                .setMessage("sdufhusdfidjs")
+                .setPositiveButton("测试", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        recreate();
+                    }
+                })
+                .create();
+        al.show();
     }
 }

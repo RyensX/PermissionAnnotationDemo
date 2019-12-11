@@ -2,6 +2,7 @@ package com.su.permissionannotation.Core;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.su.permissionannotation.Apis.APermissions;
@@ -110,8 +111,8 @@ public class AnnotationAspect {
             context = (Context) object;
         else if (object instanceof android.app.Fragment)
             context = ((android.app.Fragment) object).getActivity();
-        else if (object instanceof android.support.v4.app.Fragment)
-            context = ((android.support.v4.app.Fragment) object).getActivity();
+        else if (object instanceof Fragment)
+            context = ((Fragment) object).getActivity();
         return context;
     }
 

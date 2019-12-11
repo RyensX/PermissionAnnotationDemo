@@ -2,7 +2,7 @@ package com.su.permissionannotation.Permission;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
+import androidx.core.app.ActivityCompat;
 import android.util.Log;
 
 import com.su.permissionannotation.Interface.PermissionStatusListener;
@@ -71,9 +71,7 @@ public class PermissionActivity extends Activity {
                         Log.d("授权回调", "自定义Denial");
                         try {
                             listener.onCustomDenial();
-                        } catch (InvocationTargetException e) {
-                            e.printStackTrace();
-                        } catch (IllegalAccessException e) {
+                        } catch (InvocationTargetException | IllegalAccessException e) {
                             e.printStackTrace();
                         }
                 }
