@@ -52,6 +52,7 @@ denialMsg     | String   | 默认拒绝提示显示的msg | [DEFAULT_MSG](https:
 
 在需要申请权限的方法头上加`@Permission`或`@APermission`即可在被调用时申请权限，如
 ```Java
+//支持申请ROOT权限，权限值是PermissionUtils.ROOT_PERMISSION。若是权限组中有ROOT则ROOT会被优先向系统申请
 @Permissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     private int testMethod0(int t) {
         Log.d("测试", "testMethod0" + t);
