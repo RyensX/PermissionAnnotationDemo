@@ -22,15 +22,42 @@ public class PermissionUtils {
 
     static final String NAME_PERMISSIONS = "permissions";
     static final String NAME_REQUSETCODE = "requestCode";
-    public final static String ROOT_PERMISSION = "android.root";
-    public final static int DEFAULT_REQUSETCODE = 100;//Before方式Advice默认requestCode
-    public final static int DEFAULT_AREQUSETCODE = 200;//Around方式Advice默认requestCode
-    public final static int ERROR_REQUESTCODE = -1;
-    public final static String DEFAULT_MSG = "本应用需要一定权限才可正常运行，请授予权限";//默认权限说明
+    public static final String ROOT_PERMISSION = "android.permission.ROOT";//root权限值
+    public static final int DEFAULT_REQUSETCODE = 100;//Before方式Advice默认requestCode
+    public static final int DEFAULT_AREQUSETCODE = 200;//Around方式Advice默认requestCode
+    public static final int ERROR_REQUESTCODE = -1;
+    public static final String DEFAULT_MSG = "本应用需要一定权限才可正常运行，请授予权限";//默认权限说明
 
     //开始进行权限申请流程
     public static void requestPermission(PermissionStatusListener listener, Context context, int requestCode, String... permissions) {
+        if (permissions.length == 0)
+            return;
         PermissionActivity.listener = listener;
+        //若发现有申请root，则优先向系统发起申请并过滤权限数组
+        RequestRootPermission rrp = new RequestRootPermission(permissions);
+        if (!rrp.isNoRequestRoot()) {
+            //需要申请root权限
+            if (rrp.request(context))
+                //申请成功
+                permissions = rrp.getPermissions();
+            else {
+                //申请失败
+                if (requestCode == DEFAULT_REQUSETCODE || requestCode == DEFAULT_AREQUSETCODE)
+                    //调用默认拒绝回调
+                    listener.onDefaultDenial();
+                else {
+                    //调用自定义拒绝回调
+                    try {
+                        listener.onCustomDenial();
+                    } catch (InvocationTargetException | IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                }
+                //root没有申请成功其他权限就洗洗睡吧
+                return;
+            }
+        }
+        //申请常规权限
         Intent intent = new Intent(context, PermissionActivity.class);
         intent.putExtra(NAME_REQUSETCODE, requestCode);
         intent.putExtra(NAME_PERMISSIONS, permissions);
