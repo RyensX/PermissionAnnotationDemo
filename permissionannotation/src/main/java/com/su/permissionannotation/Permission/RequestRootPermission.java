@@ -1,7 +1,6 @@
 package com.su.permissionannotation.Permission;
 
 import android.content.Context;
-import android.util.Log;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -12,6 +11,7 @@ import java.util.List;
 
 public class RequestRootPermission {
 
+    private static final String TAG = "Root权限申请";
     private boolean isNoRequestRoot = true;
     private String[] permissions;
 
@@ -29,7 +29,7 @@ public class RequestRootPermission {
             dataOutputStream.flush();
             outputStream.close();
             int code = process.waitFor();
-            Log.d("权限解析", "申请结果code=" + code);
+            PermissionUtils.LogUtils.d(TAG, "申请结果code=" + (code == 0));
             return code == 0;
         } catch (InterruptedException | IOException e) {
             e.printStackTrace();
@@ -51,7 +51,7 @@ public class RequestRootPermission {
                 ps.add(s);
             else {
                 isNoRequestRoot = false;
-                Log.d("权限解析", "申请root");
+                PermissionUtils.LogUtils.d(TAG, "开始申请Root");
             }
         return ps.toArray(new String[ps.size()]);
     }

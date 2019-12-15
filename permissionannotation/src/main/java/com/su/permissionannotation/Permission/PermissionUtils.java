@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog;
 import android.util.Log;
 
 import com.su.permissionannotation.Apis.PermissionDenial;
+import com.su.permissionannotation.BuildConfig;
 import com.su.permissionannotation.Interface.PermissionStatusListener;
 
 import java.lang.reflect.InvocationTargetException;
@@ -104,7 +105,7 @@ public class PermissionUtils {
                 PermissionDenial permissionDenial = method.getAnnotation(PermissionDenial.class);
                 if (permissionDenial.requestCode() == requestCode) {
                     method.invoke(object);
-                    Log.d("Denial回调耗时：", System.currentTimeMillis() - s + "ms");
+                    PermissionUtils.LogUtils.d("Denial回调耗时：", System.currentTimeMillis() - s + "ms");
                     return;
                 }
             }
@@ -120,4 +121,34 @@ public class PermissionUtils {
                 .create();
         alertDialog.show();
     }
+
+    //权限申请log
+    public static class LogUtils {
+        public static void v(String tag, String message) {
+            if (BuildConfig.DEBUG)
+                Log.v(tag, message);
+        }
+
+        public static void d(String tag, String message) {
+            if (BuildConfig.DEBUG)
+                Log.d(tag, message);
+        }
+
+        public static void i(String tag, String message) {
+            if (BuildConfig.DEBUG)
+                Log.i(tag, message);
+        }
+
+
+        public static void w(String tag, String message) {
+            if (BuildConfig.DEBUG)
+                Log.w(tag, message);
+        }
+
+        public static void e(String tag, String message) {
+            if (BuildConfig.DEBUG)
+                Log.e(tag, message);
+        }
+    }
+
 }

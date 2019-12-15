@@ -2,7 +2,6 @@ package com.su.permissionannotation.Core;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 
 import androidx.fragment.app.Fragment;
 
@@ -33,7 +32,7 @@ public class AnnotationAspect {
 
     @Around("APermissionsInject(permissions)")
     public void onAPermissionsInject(final ProceedingJoinPoint joinPoint, final APermissions permissions) {
-        Log.d("切入点", joinPoint.getSignature().getName());
+        PermissionUtils.LogUtils.d("切入点", joinPoint.getSignature().getName());
 
         Object object = joinPoint.getThis();
         final Context context = getContext(object);
@@ -43,7 +42,7 @@ public class AnnotationAspect {
             return;
 
         for (String per : permissions.value())
-            Log.d("注解权限值", per);
+            PermissionUtils.LogUtils.d("注解权限值", per);
 
         PermissionUtils.requestPermission(new PermissionStatusListener() {
             @Override
@@ -77,7 +76,7 @@ public class AnnotationAspect {
 
     @Before("PermissionsInject(permissions)")
     public void onPermissionsInject(final JoinPoint joinPoint, final Permissions permissions) {
-        Log.d("切入点", joinPoint.getSignature().getName());
+        PermissionUtils.LogUtils.d("切入点", joinPoint.getSignature().getName());
 
         Object object = joinPoint.getThis();
         final Context context = getContext(object);
@@ -86,7 +85,7 @@ public class AnnotationAspect {
             return;
 
         for (String per : permissions.value())
-            Log.d("注解值", per);
+            PermissionUtils.LogUtils.d("注解值", per);
 
         PermissionUtils.requestPermission(new PermissionStatusListener() {
             @Override

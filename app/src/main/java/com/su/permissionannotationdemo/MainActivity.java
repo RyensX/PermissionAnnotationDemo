@@ -7,7 +7,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.su.permissionannotation.Apis.APermissions;
@@ -28,13 +27,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Permissions(value = Manifest.permission.WRITE_EXTERNAL_STORAGE, denialMsg = "测试msg")
     public int testMethod(int t) {
-        Log.d("注入测试,执行方法", "testMethod" + t);
+        PermissionUtils.LogUtils.d("注入测试,执行方法", "testMethod" + t);
         return t;
     }
 
     @APermissions(value = {PermissionUtils.ROOT_PERMISSION, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE}, requestCode = 111)
     public void testMethod2(int t) {
-        Log.d("注入测试,执行方法", "testMethod2" + t);
+        PermissionUtils.LogUtils.d("注入测试,执行方法", "testMethod2" + t);
         Toast.makeText(this, "调用方法2成功", Toast.LENGTH_SHORT).show();
     }
 
