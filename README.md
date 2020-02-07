@@ -20,7 +20,7 @@ apply plugin: 'android-aspectjx'
 ```gradle
 dependencies {
         ...
-        implementation ('com.su:PermissionAnnotation:1.0.1')
+        implementation ('com.su:PermissionAnnotation:1.0.4')
 }
 ```
 

@@ -4,13 +4,11 @@ apply plugin: 'com.novoda.bintray-release'
 android {
     compileSdkVersion 28
 
-
-
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -21,6 +19,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+
+    lintOptions {
+        abortOnError false
     }
 
 }
@@ -39,7 +41,7 @@ publish {
     userOrg = 'ryens'
     groupId = 'com.su'
     artifactId = 'PermissionAnnotation'
-    publishVersion = '1.0.3'
+    publishVersion = '1.0.4'
     desc = 'This is a dynamic permission library implemented with AOP.'
     website = 'https://github.com/Ryensu/PermissionAnnotationDemo'
 }
